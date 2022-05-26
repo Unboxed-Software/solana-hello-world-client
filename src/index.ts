@@ -2,19 +2,19 @@ import web3 = require("@solana/web3.js");
 import Dotenv from "dotenv";
 Dotenv.config();
 
-let programId = new web3.PublicKey(
-  "ByEQMcFBK9pyeibXNip6omjg6wzGvSPxQ5gFqUASUWN8"
-);
+let programId = new web3.PublicKey("<YOUR_PROGRAM_ID>");
 
-let user = initializeKeypair();
-// let connection = new web3.Connection(web3.clusterApiUrl("devnet"));
+let payer = initializeKeypair();
 let connection = new web3.Connection("http://127.0.0.1:8899", "confirmed");
 
 async function main() {
-  await connection.requestAirdrop(user.publicKey, web3.LAMPORTS_PER_SOL * 1);
+  await connection.requestAirdrop(payer.publicKey, web3.LAMPORTS_PER_SOL * 1);
 
-  const signature = await sayHello();
-  console.log(signature);
+  const transactionSignature = await sayHello();
+
+  console.log(
+    `Transaction: https://explorer.solana.com/tx/${transactionSignature}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`
+  );
 }
 
 main()
@@ -26,19 +26,23 @@ main()
   });
 
 export async function sayHello(): Promise<web3.TransactionSignature> {
+  const transaction = new web3.Transaction();
+
   const instruction = new web3.TransactionInstruction({
     keys: [],
     programId,
-    data: Buffer.alloc(0), // All instructions are hellos
+    data: Buffer.alloc(0),
   });
 
-  const sig = await web3.sendAndConfirmTransaction(
+  transaction.add(instruction);
+
+  const transactionSignature = await web3.sendAndConfirmTransaction(
     connection,
-    new web3.Transaction().add(instruction),
-    [user]
+    transaction,
+    [payer]
   );
 
-  return sig;
+  return transactionSignature;
 }
 
 function initializeKeypair(): web3.Keypair {
