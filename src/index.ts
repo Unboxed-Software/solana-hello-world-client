@@ -2,7 +2,9 @@ import web3 = require("@solana/web3.js");
 import Dotenv from "dotenv";
 Dotenv.config();
 
-let programId = new web3.PublicKey("<YOUR_PROGRAM_ID>");
+let programId = new web3.PublicKey(
+  "5Q7oKQf3JXrLG4qkZ9bdiGsB6JTkQyREGg3hzKjvd2SQ"
+);
 
 let payer = initializeKeypair();
 let connection = new web3.Connection(web3.clusterApiUrl("devnet"));
@@ -13,7 +15,7 @@ async function main() {
   const transactionSignature = await sayHello();
 
   console.log(
-    `Transaction: https://explorer.solana.com/tx/${transactionSignature}?cluster=custom&customUrl=http%3A%2F%2Flocalhost%3A8899`
+    `Transaction: https://explorer.solana.com/tx/${transactionSignature}?cluster=devnet`
   );
 }
 
