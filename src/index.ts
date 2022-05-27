@@ -2,9 +2,7 @@ import web3 = require("@solana/web3.js");
 import Dotenv from "dotenv";
 Dotenv.config();
 
-let programId = new web3.PublicKey(
-  "5Q7oKQf3JXrLG4qkZ9bdiGsB6JTkQyREGg3hzKjvd2SQ"
-);
+let programId = new web3.PublicKey("<YOUR_PROGRAM_ID>");
 
 let payer = initializeKeypair();
 let connection = new web3.Connection(web3.clusterApiUrl("devnet"));
@@ -13,7 +11,7 @@ async function main() {
   await connection.requestAirdrop(payer.publicKey, web3.LAMPORTS_PER_SOL * 1);
 
   const transactionSignature = await sayHello();
-
+ 
   console.log(
     `Transaction: https://explorer.solana.com/tx/${transactionSignature}?cluster=devnet`
   );
