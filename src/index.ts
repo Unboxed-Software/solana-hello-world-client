@@ -2,9 +2,7 @@ import web3 = require("@solana/web3.js");
 import Dotenv from "dotenv";
 Dotenv.config();
 
-let programId = new web3.PublicKey(
-  "CBFfC4HkiQuq6j98bj8hxfceanXPSgfmg5DKL46pmXLh"
-);
+let programId = new web3.PublicKey("<YOUR_PROGRAM_ID>");
 
 let payer = initializeKeypair();
 let connection = new web3.Connection(web3.clusterApiUrl("devnet"));
