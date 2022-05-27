@@ -2,10 +2,12 @@ import web3 = require("@solana/web3.js");
 import Dotenv from "dotenv";
 Dotenv.config();
 
-let programId = new web3.PublicKey("<YOUR_PROGRAM_ID>");
+let programId = new web3.PublicKey(
+  "CBFfC4HkiQuq6j98bj8hxfceanXPSgfmg5DKL46pmXLh"
+);
 
 let payer = initializeKeypair();
-let connection = new web3.Connection("http://127.0.0.1:8899", "confirmed");
+let connection = new web3.Connection(web3.clusterApiUrl("devnet"));
 
 async function main() {
   await connection.requestAirdrop(payer.publicKey, web3.LAMPORTS_PER_SOL * 1);
