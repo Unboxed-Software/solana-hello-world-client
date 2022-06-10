@@ -1,17 +1,20 @@
+import { initializeKeypair } from "./initializeKeypair";
 import web3 = require("@solana/web3.js");
 import Dotenv from "dotenv";
 Dotenv.config();
 
-let programId = new web3.PublicKey("<YOUR_PROGRAM_ID>");
+let programId = new web3.PublicKey(
+  "EUQY7xg64E5KPvDuS8nyE3Q9Y2WmYL4NWYuakLr8pUr5"
+);
 
-let payer = initializeKeypair();
 let connection = new web3.Connection(web3.clusterApiUrl("devnet"));
 
 async function main() {
+  let payer = await initializeKeypair(connection);
   await connection.requestAirdrop(payer.publicKey, web3.LAMPORTS_PER_SOL * 1);
 
-  const transactionSignature = await sayHello();
- 
+  const transactionSignature = await sayHello(payer);
+
   console.log(
     `Transaction: https://explorer.solana.com/tx/${transactionSignature}?cluster=devnet`
   );
@@ -25,7 +28,9 @@ main()
     console.error(error);
   });
 
-export async function sayHello(): Promise<web3.TransactionSignature> {
+export async function sayHello(
+  payer: web3.Keypair
+): Promise<web3.TransactionSignature> {
   const transaction = new web3.Transaction();
 
   const instruction = new web3.TransactionInstruction({
@@ -45,9 +50,3 @@ export async function sayHello(): Promise<web3.TransactionSignature> {
   return transactionSignature;
 }
 
-function initializeKeypair(): web3.Keypair {
-  const secret = JSON.parse(process.env.PRIVATE_KEY ?? "") as number[];
-  const secretKey = Uint8Array.from(secret);
-  const keypairFromSecretKey = web3.Keypair.fromSecretKey(secretKey);
-  return keypairFromSecretKey;
-}
