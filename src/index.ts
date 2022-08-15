@@ -7,7 +7,7 @@ let programId = new web3.PublicKey(
     "9EGKgrPGb9FvZhxntRKbgZTEMq6hyHBnj4Cs71C8NuwW"
 )
 
-let connection = new web3.Connection("http://localhost:8899")
+let connection = new web3.Connection("http://127.0.0.1:8899")
 
 async function main() {
     let payer = await initializeKeypair(connection)
