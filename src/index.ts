@@ -4,7 +4,7 @@ import Dotenv from "dotenv"
 Dotenv.config()
 
 let programId = new web3.PublicKey(
-    "9EGKgrPGb9FvZhxntRKbgZTEMq6hyHBnj4Cs71C8NuwW"
+    "<YOUR_PROGRAM_ID>"
 )
 
 let connection = new web3.Connection(web3.clusterApiUrl("devnet"))
