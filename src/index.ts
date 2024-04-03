@@ -11,7 +11,6 @@ let connection = new web3.Connection(web3.clusterApiUrl("devnet"))
 
 async function main() {
     let payer = await initializeKeypair(connection)
-    await connection.requestAirdrop(payer.publicKey, web3.LAMPORTS_PER_SOL * 1)
 
     const transactionSignature = await sayHello(payer)
 
