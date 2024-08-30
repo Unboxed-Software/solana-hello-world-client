@@ -1,50 +1,47 @@
-import { initializeKeypair } from "./initializeKeypair"
-import web3 = require("@solana/web3.js")
-import Dotenv from "dotenv"
-Dotenv.config()
+import {
+  Connection,
+  Keypair,
+  LAMPORTS_PER_SOL,
+  PublicKey,
+  Transaction,
+  TransactionInstruction,
+  clusterApiUrl,
+  sendAndConfirmTransaction,
+} from "@solana/web3.js";
+import { initializeKeypair } from "@solana-developers/helpers";
+import dotenv from "dotenv";
 
-let programId = new web3.PublicKey(
-    "<YOUR_PROGRAM_ID>"
-)
+dotenv.config();
 
-let connection = new web3.Connection(web3.clusterApiUrl("devnet"))
+const programId = new PublicKey("8ziTvCeyd66eRqKAv1e5jB61Q4WbRacmNVHwrDP4YJay");
+const connection = new Connection(clusterApiUrl("devnet"));
 
-async function main() {
-    let payer = await initializeKeypair(connection)
-    await connection.requestAirdrop(payer.publicKey, web3.LAMPORTS_PER_SOL * 1)
+export const sayHello = async (payer: Keypair): Promise<string> => {
+  const transaction = new Transaction();
+  const instruction = new TransactionInstruction({
+    keys: [],
+    programId,
+  });
 
-    const transactionSignature = await sayHello(payer)
+  transaction.add(instruction);
 
-    console.log(
-        `Transaction: https://explorer.solana.com/tx/${transactionSignature}?cluster=devnet`
-    )
-}
+  return sendAndConfirmTransaction(connection, transaction, [payer]);
+};
 
-main()
-    .then(() => {
-        console.log("Finished successfully")
-    })
-    .catch((error) => {
-        console.error(error)
-    })
+try {
+  const payer = await initializeKeypair(connection);
+  await connection.requestAirdrop(payer.publicKey, LAMPORTS_PER_SOL);
 
-export async function sayHello(
-    payer: web3.Keypair
-): Promise<web3.TransactionSignature> {
-    const transaction = new web3.Transaction()
+  const transactionSignature = await sayHello(payer);
 
-    const instruction = new web3.TransactionInstruction({
-        keys: [],
-        programId,
-    })
-
-    transaction.add(instruction)
-
-    const transactionSignature = await web3.sendAndConfirmTransaction(
-        connection,
-        transaction,
-        [payer]
-    )
-
-    return transactionSignature
+  console.log(
+    `Transaction: https://explorer.solana.com/tx/${transactionSignature}?cluster=devnet`
+  );
+  console.log("Finished successfully");
+} catch (error) {
+  if (error instanceof Error) {
+    throw new Error(`An error occurred: ${error.message}`);
+  } else {
+    throw new Error("An unknown error occurred");
+  }
 }
