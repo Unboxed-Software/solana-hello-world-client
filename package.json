@@ -2,7 +2,7 @@
   "name": "solana-hello-world-client",
   "version": "1.0.0",
   "description": "",
-  "main": "dist/index",
+  "main": "src/index.ts",
   "scripts": {
     "test": "esrun src/index.test.ts",
     "start": "esrun src/index.ts",
