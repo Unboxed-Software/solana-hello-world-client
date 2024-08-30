@@ -2,8 +2,8 @@
   "compilerOptions": {
     "outDir": "dist",
     "target": "es2022",
-    "moduleResolution": "nodenext",
-    "module": "NodeNext",
+    "moduleResolution": "Bundler",
+    "module": "ES2022",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
